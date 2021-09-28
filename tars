@@ -1,0 +1,72 @@
+#!/bin/bash
+if [ -z "$1" ]; then
+	echo オプション無しなので終了します。
+	echo
+	echo
+	echo このスプリクトは自分のファイル名によって動作が変わります（シンボリックファイルでも可）
+	echo このスクリプトを適当な所に置いた上で
+	echo 「sudo ./tars install」でインストール（/usr/local/bin/内に各シンボリックリンクを生成します）
+	echo 「sudo tars remove」でアンイントール
+	echo
+	echo
+	echo 解凍系は　tars ＜解凍したいファイル名＞
+	echo 圧縮系は　tars.c ＜圧縮ファイル名＞ ＜対象フォルダ名＞
+	echo
+	echo その他解凍系は　tars.gz tarz.bz2 tars.xz tars.unzip
+	echo その他圧縮系は　tars.gz.c tarz.bz2.c tars.xz.c tars.zip
+	echo
+	exit
+fi
+if [[ $1 = "install" ]]; then
+	echo /usr/local/bin内にインストールします
+	link_path=`readlink $0`
+	if [ -n "$link_path" ]; then
+		script_path=$link_path
+	else
+		script_path=`realpath $0`
+	fi
+	sudo ln -sfv $script_path /usr/local/bin/tars
+	sudo ln -sfv $script_path /usr/local/bin/tars.c
+	sudo ln -sfv $script_path /usr/local/bin/tars.gz
+	sudo ln -sfv $script_path /usr/local/bin/tars.gz.c
+	sudo ln -sfv $script_path /usr/local/bin/tars.bz2
+	sudo ln -sfv $script_path /usr/local/bin/tars.bz2.c
+	sudo ln -sfv $script_path /usr/local/bin/tars.xz
+	sudo ln -sfv $script_path /usr/local/bin/tars.xz.c
+	sudo ln -sfv $script_path /usr/local/bin/tars.unzip
+	sudo ln -sfv $script_path /usr/local/bin/tars.zip
+	exit
+fi
+if [[ $1 = "remove" ]]; then
+	echo /usr/local/bin内から削除します
+	link_path=`readlink $0`
+	if [ -n "$link_path" ]; then
+		script_path=$link_path
+	else
+		script_path=`realpath $0`
+	fi
+	sudo rm -v /usr/local/bin/tars
+	sudo rm -v /usr/local/bin/tars.c
+	sudo rm -v /usr/local/bin/tars.gz
+	sudo rm -v /usr/local/bin/tars.gz.c
+	sudo rm -v /usr/local/bin/tars.bz2
+	sudo rm -v /usr/local/bin/tars.bz2.c
+	sudo rm -v /usr/local/bin/tars.xz
+	sudo rm -v /usr/local/bin/tars.xz.c
+	sudo rm -v /usr/local/bin/tars.unzip
+	sudo rm -v /usr/local/bin/tars.zip
+	exit
+fi
+case `basename $0` in
+	"tars" ) echo tar解凍モード; tar -xvf $@ ;;
+	"tars.c" ) echo tar圧縮モード; tar -cvf $@ ;;
+	"tars.gz" ) echo tar.gz解凍モード; tar -zxvf $@ ;;
+	"tars.gz.c" ) echo tar.gz圧縮モード; tar -zcvf $@ ;;
+	"tars.bz2" ) echo tar.bz2解凍モード; tar -jxvf $@ ;;
+	"tars.bz2.c" ) echo tar.bz2圧縮モード; tar -jcvf $@ ;;
+	"tars.xz" ) echo tar.xz解凍モード; tar -Jxvf $@ ;;
+	"tars.xz.c" ) echo tar.xz圧縮モード; tar -Jcvf $@ ;;
+	"tars.unzip" ) echo zip解凍モード; unzip $@ ;;
+	"tars.zip" ) echo zip圧縮モード; zip -r $@ ;;
+esac
+
