@@ -5,8 +5,8 @@ if [ -z "$1" ]; then
 	echo
 	echo このスプリクトは自分のファイル名によって動作が変わります（シンボリックファイルでも可）
 	echo このスクリプトを適当な所に置いた上で
-	echo 「sudo ./tars install」でインストール（/usr/local/bin/内に各シンボリックリンクを生成します）
-	echo 「sudo tars remove」でアンイントール
+	echo 「./tars install」でインストール（/usr/local/bin/内に各シンボリックリンクを生成します）
+	echo 「./tars remove」でアンイントール
 	echo
 	echo
 	echo 解凍系は　tars ＜解凍したいファイル名＞
